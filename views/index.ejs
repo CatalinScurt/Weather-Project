@@ -1,0 +1,113 @@
+<%- include("partials/header") -%>
+    <video src="images/video.mp4" autoplay muted loop class="video"></video>
+    <% const days=['Sunday', 'Monday' , 'Tuesday' , 'Wednesday' , 'Thursday' , 'Friday' , 'Saturday' ]; %>
+        <% if (firstPage) { %>
+            <% if (error.length> 0) { %>
+                <div class="error">
+                    <p>
+                        <%=error%>
+                    </p>
+                </div>
+                <% } %>
+                    <div class="text-welcome">
+                        <h1 class="welcome">Check the weather <br> anywhere <br> in the world</h1>
+                    </div>
+                    <% } else {%>
+                        <div class="weather-container">
+                            <div class="weather-today">
+                                <div class="today-first">
+                                    <div class="left">
+                                        <h3 class="right-now">Right Now</h3>
+                                        <p class="city-name">
+                                            <%=city%>
+                                        </p>
+                                        <h2 style="color: #009ad8;">
+                                            <%=Math.round(weatherData[0].main.temp)%>°C
+                                        </h2>
+                                        <div class="left-bottom">
+                                            <img src="images/umbrella.svg" alt="">
+                                            <h3>
+                                                <%=parseFloat(weatherData[0].pop*100).toFixed() %> %
+                                            </h3>
+                                            <i class="fa-solid fa-wind"></i>
+                                            <h3 class="wind">
+                                                <%=parseFloat(weatherData[0].wind.speed*3.6).toFixed() %> m/sec
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="right">
+                                        <img src="http://openweathermap.org/img/wn/<%=weatherData[0].weather[0].icon %>@2x.png"
+                                            alt="">
+                                    </div>
+                                </div>
+                                <% var test1=weatherData[0].dt_txt.split(' ')[0]; %>
+            <%var test2 = test1;%>
+            <%var count = 1%>
+            <%while (count < weatherData.length && test1 === test2) {%>
+                <%  test2 = weatherData[count].dt_txt.split(' ')[0];%>
+                <div class="today-second">
+                    <%if(count%2==0) {%>
+                        <div class="hour2"><h3><%=weatherData[count-1].dt_txt.split(' ')[1].slice(0,5)%></h3></div>
+                        <%} else {%>
+                        <div class="hour1"><h3><%=weatherData[count-1].dt_txt.split(' ')[1].slice(0,5)%></h3></div>
+                        <%}%>
+                    <img src="http://openweathermap.org/img/wn/<%=weatherData[count-1].weather[0].icon %>@2x.png" alt="">
+                    <h2><%=Math.round(weatherData[count-1].main.temp)%>°C</h2>
+                    <h3><%=parseFloat(weatherData[count-1].pop*100).toFixed() %> %</h3>
+                </div>
+                <%count++;%>
+                <%}%>
+                                </div>
+    <h1 class="break">Weather forecast for <span class="h1-city"><%=city%></span> <br> in the next five days.</h1>
+    <div class="carousel">
+    <div class="slideshow-container">
+       <% var index = 1; %>
+    <% while (count < weatherData.length) { %>
+        <%   test1 = weatherData[count-1].dt_txt.split(' ')[0] %>
+          <% var test2 = weatherData[count-1].dt_txt.split(' ')[0] %>
+          <div class="mySlides fade">
+            <div class="text"><%= days[(today+index)%7] %></div>
+            <div class="cart">
+                <%index++%>
+          <% while (count < weatherData.length && test1 === test2) { %>
+            <%   test2 = weatherData[count].dt_txt.split(' ')[0] %>
+            <div class="weather-cart">
+                <%if(count%2==0) {%>
+                    <div class="hour1"><h3><%=weatherData[count-1].dt_txt.split(' ')[1].slice(0,5)%></h3></div>
+                    <%} else {%>
+                    <div class="hour2"><h3><%=weatherData[count-1].dt_txt.split(' ')[1].slice(0,5)%></h3></div>
+                    <%}%>                <img src="http://openweathermap.org/img/wn/<%=weatherData[count-1].weather[0].icon %>@2x.png" alt="">
+                <h2><%=Math.round(weatherData[count-1].main.temp)%>°C</h2>
+                <h3><%=parseFloat(weatherData[count-1].pop*100).toFixed() %> %</h3>
+            </div>
+            <%   count++ %>
+             <%  if (count === weatherData.length) { %>
+                <div class="weather-cart">
+                    <%if(count%2==0) {%>
+                        <div class="hour1"><h3><%=weatherData[count-1].dt_txt.split(' ')[1].slice(0,5)%></h3></div>
+                        <%} else {%>
+                        <div class="hour2"><h3><%=weatherData[count-1].dt_txt.split(' ')[1].slice(0,5)%></h3></div>
+                        <%}%>
+                    <img src="http://openweathermap.org/img/wn/<%=weatherData[count-1].weather[0].icon %>@2x.png" alt="">
+                    <h2><%=Math.round(weatherData[count-1].main.temp)%>°C</h2>
+                    <h3><%=parseFloat(weatherData[count-1].pop*100).toFixed() %> %</h3>
+                </div>
+            <%   } %>
+            <%   } %>
+           </div>
+           </div>
+      <% } %>
+      <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+      <a class="next" onclick="plusSlides(1)">&#10095;</a>
+  </div>
+  <br>
+  <div style="text-align:center" class="bullets">
+    <% for(let i = 0; i<count/8; i++) { %>
+        <span class="dot" onclick="currentSlide(' <%=i+1 %>')">
+                                    </span>
+                                    <% } %>
+                            </div>
+                        </div>
+                        <% } %>
+                            </div>
+                            <%- include("partials/footer") -%>
